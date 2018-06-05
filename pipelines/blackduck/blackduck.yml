@@ -1,0 +1,38 @@
+---
+resources:
+- name: spring-music
+  type: git
+  source:
+    uri: https://github.com/cloudfoundry-samples/spring-music.git
+    branch: master
+
+jobs:
+- name: scan
+  plan:
+  - get: spring-music
+  - task: blackduck
+    input_mapping:
+      - repo: spring-music
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: maven
+          tag: 3-jdk-8
+      inputs:
+      - name: repo
+      run:
+        path: sh
+        args:
+        - -exc
+        - |
+          cd repo
+
+          wget https://blackducksoftware.github.io/hub-detect/hub-detect.sh
+
+          ./hub-detect.sh \
+            --blackduck.hub.url=((hub_url)) \
+            --blackduck.hub.username=((hub_username)) \
+            --blackduck.hub.password=((hub_password))
+
