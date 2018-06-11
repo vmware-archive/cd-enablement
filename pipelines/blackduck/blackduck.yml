@@ -1,11 +1,10 @@
 ---
+resources:
 - name: cd-enablement
   type: git
   source:
     uri: https://github.com/pivotal-cf/cd-enablement.git
     branch: master
-
-resources:
 - name: spring-music
   type: git
   source:
