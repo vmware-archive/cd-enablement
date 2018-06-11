@@ -1,0 +1,27 @@
+---
+platform: linux
+inputs:
+  - name: repo
+image_resource:
+  type: docker-image
+  source:
+    repository: maven
+    tag: 3-jdk-8
+params:
+  HUB_URL:
+  HUB_USERNAME:
+  HUB_PASSWORD:
+run:
+  path: sh
+  dir: repo
+  args:
+    - -ec
+    - |
+      wget https://blackducksoftware.github.io/hub-detect/hub-detect.sh
+
+      chmod +x hub-detect.sh
+
+      ./hub-detect.sh \
+        --blackduck.hub.url=${HUB_URL} \
+        --blackduck.hub.username=${HUB_USERNAME} \
+        --blackduck.hub.password=${HUB_PASSWORD}
